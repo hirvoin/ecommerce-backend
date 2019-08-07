@@ -1,7 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const config = require('./utils/config')
+const middleware = require('./utils/middleware')
 
 mongoose
   .connect(config.mongoUrl)
@@ -15,6 +17,8 @@ mongoose
 const app = express()
 const productsRouter = require('./controllers/products')
 
+app.use(cors())
+app.use(middleware.logger)
 app.use(bodyParser.json())
 app.use('/api/products', productsRouter)
 
