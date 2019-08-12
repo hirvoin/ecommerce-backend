@@ -5,12 +5,12 @@ const formatProduct = product => ({
   _id: product._id,
   sku: product.sku,
   type: product.type,
-  price: product.price,
+  date_added: product.details.date_added,
   details: {
     title: product.details.title,
     description: product.details.description,
+    price: product.price,
     // image: product.details.image,
-    date_added: product.details.date_added,
   },
 })
 
@@ -38,15 +38,14 @@ productsRouter.get('/:id', async (request, response) => {
 productsRouter.post('/', async (request, response) => {
   try {
     const { body } = request
-    console.log('body', body)
 
     const product = new Product({
       sku: body.sku,
       type: body.type,
       price: body.price,
       details: {
-        title: body.details.title,
-        description: body.details.description,
+        title: body.title,
+        description: body.description,
         // image: body.details.image,
         date_added: Date(),
       },
@@ -56,7 +55,7 @@ productsRouter.post('/', async (request, response) => {
 
     const savedProduct = await product.save()
 
-    return response.json(formatProduct(savedProduct))
+    return response.status(201).json(formatProduct(savedProduct))
   } catch (error) {
     console.log(error)
     return response.status(400).json({ error: 'something went wrong' })
