@@ -21,6 +21,7 @@ const loginRouter = require('./controllers/login')
 
 app.use(cors())
 app.use(middleware.logger)
+app.use(middleware.tokenExtractor)
 app.use(bodyParser.json())
 app.use('/api/products', productsRouter)
 app.use('/api/users', usersRouter)

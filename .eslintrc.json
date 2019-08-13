@@ -4,9 +4,6 @@
   "rules": {
     "semi": ["error", "never"],
     "no-console": "off",
-    "no-underscore-dangle": "off",
-    "max-len": {
-      "code": 80
-    }
+    "no-underscore-dangle": "off"
   }
 }

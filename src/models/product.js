@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
-const Product = mongoose.model('Product', {
-  sku: String,
-  type: String,
+const productSchema = mongoose.Schema({
+  sku: {
+    type: String,
+    unique: true,
+  },
   price: Number,
   details: {
     title: String,
@@ -10,5 +13,9 @@ const Product = mongoose.model('Product', {
     date_added: Date,
   },
 })
+
+productSchema.plugin(uniqueValidator)
+
+const Product = mongoose.model('Product', productSchema)
 
 module.exports = Product

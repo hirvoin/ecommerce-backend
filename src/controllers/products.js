@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const productsRouter = require('express').Router()
 const Product = require('../models/product')
 
@@ -37,8 +38,13 @@ productsRouter.get('/:id', async (request, response) => {
 
 productsRouter.post('/', async (request, response) => {
   try {
-    const { body } = request
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
+    if (!decodedToken.admin) {
+      return response.status(401).json({ error: 'no admin rights' })
+    }
+
+    const { body } = request
     const product = new Product({
       sku: body.sku,
       type: body.type,
@@ -64,6 +70,12 @@ productsRouter.post('/', async (request, response) => {
 
 productsRouter.put('/:id', async (request, response) => {
   try {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!decodedToken.admin) {
+      return response.status(401).json({ error: 'no admin rights' })
+    }
+
     const { body } = request
     console.log(body)
 
@@ -89,6 +101,12 @@ productsRouter.put('/:id', async (request, response) => {
 
 productsRouter.delete('/:id', async (request, response) => {
   try {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!decodedToken.admin) {
+      return response.status(401).json({ error: 'no admin rights' })
+    }
+
     await Product.findByIdAndDelete(request.params.id)
     return response.status(204).end()
   } catch (exception) {
