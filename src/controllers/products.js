@@ -40,6 +40,7 @@ productsRouter.post('/', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
+    // mahdollisesti parempi hakea tietokannasta käyttäjä id:n avulla
     if (!decodedToken.admin) {
       return response.status(401).json({ error: 'no admin rights' })
     }

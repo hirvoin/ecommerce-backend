@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/orders
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNTJhNTJkZTFmZWMxMWE4ZGZhYzMzMyIsInVzZXJuYW1lIjoidGVzdGkiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NjE0MzAyNn0.j-g8h1HjaPzK3AaoNxU5IWMVYbNxTTvt1zz2fCsdbWc
+
+{
+  "products": ["5c1a3a774aea1c5fb5ee9db9", "5c1cfd8ef186732d3b65c2f9"],
+  "totalPrice": 100.50
+}

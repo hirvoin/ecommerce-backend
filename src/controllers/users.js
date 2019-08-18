@@ -15,7 +15,7 @@ usersRouter.get('/', async (request, response) => {
     return response.json(users.map(user => user.toJSON()))
   } catch (exception) {
     console.log(exception)
-    return response.status(400).json({ error: 'something went wrong' })
+    return response.status(400).json(exception)
   }
 })
 
@@ -45,5 +45,22 @@ usersRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: 'something went wrong' })
   }
 })
+
+usersRouter.delete('/:id', async (request, response) => {
+  try {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!decodedToken.admin) {
+      return response.status(401).json({ error: 'no admin rights' })
+    }
+
+    await User.findByIdAndDelete(request.params.id)
+    return response.status(204).end()
+  } catch (exception) {
+    console.log(exception)
+    return response.status(400).json({ error: 'someting went wrong' })
+  }
+})
+
 
 module.exports = usersRouter

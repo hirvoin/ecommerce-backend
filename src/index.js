@@ -17,6 +17,7 @@ mongoose
 const app = express()
 const productsRouter = require('./controllers/products')
 const usersRouter = require('./controllers/users')
+const orderRouter = require('./controllers/orders')
 const loginRouter = require('./controllers/login')
 
 app.use(cors())
@@ -26,6 +27,7 @@ app.use(bodyParser.json())
 app.use('/api/products', productsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/orders', orderRouter)
 
 app.get('/', (request, response) => {
   response.send('<h1>ecommerce-backend</h1>')
