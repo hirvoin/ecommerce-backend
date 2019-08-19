@@ -74,7 +74,7 @@ productsRouter.put('/:id', async (request, response) => {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     if (!decodedToken.admin) {
-      return response.status(401).json({ error: 'no admin rights' })
+      return response.status(403).json({ error: 'no admin rights' })
     }
 
     const { body } = request
@@ -105,7 +105,7 @@ productsRouter.delete('/:id', async (request, response) => {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     if (!decodedToken.admin) {
-      return response.status(401).json({ error: 'no admin rights' })
+      return response.status(403).json({ error: 'no admin rights' })
     }
 
     await Product.findByIdAndDelete(request.params.id)

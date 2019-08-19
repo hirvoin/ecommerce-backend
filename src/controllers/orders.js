@@ -25,13 +25,17 @@ orderRouter.post('/', async (request, response) => {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     const { body } = request
-    console.log(body)
+
+    if (body.products.length < 1 || !body.deliveryAddress) {
+      return response.status(400).json({ error: 'order details missing' })
+    }
 
     const order = new Order({
       user: decodedToken.id,
       products: body.products,
       date: Date(),
       totalPrice: body.totalPrice,
+      deliveryAddress: body.deliveryAddress,
     })
 
     console.log('Order', order)

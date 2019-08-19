@@ -4,5 +4,12 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNTJhNTJkZ
 
 {
   "products": ["5c1a3a774aea1c5fb5ee9db9", "5c1cfd8ef186732d3b65c2f9"],
-  "totalPrice": 100.50
+  "totalPrice": 100.50,
+  "deliveryAddress": {
+    "name": "Maja Grohs",
+    "street": "Ölbergstr. 3",
+    "zipCode": "50939",
+    "city": "Köln",
+    "country": "Germany"
+  }
 }

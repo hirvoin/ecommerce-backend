@@ -8,7 +8,7 @@ usersRouter.get('/', async (request, response) => {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     if (!decodedToken.admin) {
-      return response.status(401).json({ error: 'no admin rights' })
+      return response.status(403).json({ error: 'no admin rights' })
     }
 
     const users = await User.find({})
@@ -51,7 +51,7 @@ usersRouter.delete('/:id', async (request, response) => {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     if (!decodedToken.admin) {
-      return response.status(401).json({ error: 'no admin rights' })
+      return response.status(403).json({ error: 'no admin rights' })
     }
 
     await User.findByIdAndDelete(request.params.id)
@@ -61,6 +61,5 @@ usersRouter.delete('/:id', async (request, response) => {
     return response.status(400).json({ error: 'someting went wrong' })
   }
 })
-
 
 module.exports = usersRouter
