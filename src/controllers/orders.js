@@ -1,14 +1,16 @@
 const orderRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Order = require('../models/order')
+const User = require('../models/user')
 
 orderRouter.get('/', async (request, response) => {
   try {
-    // const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
 
-    // if (!decodedToken.admin) {
-    //   return response.status(401).json({ error: 'no admin rights' })
-    // }
+    if (!user.admin) {
+      return response.status(403).json({ error: 'no admin rights' })
+    }
 
     const orders = await Order.find({})
       .populate('products')

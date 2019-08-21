@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const Order = require('../models/order')
 
 usersRouter.get('/', async (request, response) => {
   try {
@@ -12,7 +13,39 @@ usersRouter.get('/', async (request, response) => {
     }
 
     const users = await User.find({})
-    return response.json(users.map(user => user.toJSON()))
+    return response.status(200).json(users.map(user => user.toJSON()))
+  } catch (exception) {
+    console.log(exception)
+    return response.status(400).json(exception)
+  }
+})
+
+usersRouter.get('/:id', async (request, response) => {
+  try {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!decodedToken.id === request.params.id) {
+      return response.status(403)
+    }
+
+    const userToReturn = await User.findById(decodedToken.id)
+
+    return response.status(200).json(userToReturn)
+  } catch (exception) {
+    console.log(exception)
+    return response.status(400).json(exception)
+  }
+})
+
+usersRouter.get('/:id/orders', async (request, response) => {
+  try {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!decodedToken.id === request.params.id) {
+      return response.status(403)
+    }
+    const orders = await Order.find({ user: request.params.id }).populate('products')
+    return response.status(200).json(orders)
   } catch (exception) {
     console.log(exception)
     return response.status(400).json(exception)

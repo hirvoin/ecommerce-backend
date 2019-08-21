@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const productsRouter = require('express').Router()
 const Product = require('../models/product')
+const User = require('../models/user')
 
 const formatProduct = product => ({
   _id: product._id,
@@ -39,10 +40,10 @@ productsRouter.get('/:id', async (request, response) => {
 productsRouter.post('/', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
 
-    // mahdollisesti parempi hakea tietokannasta käyttäjä id:n avulla
-    if (!decodedToken.admin) {
-      return response.status(401).json({ error: 'no admin rights' })
+    if (!user.admin) {
+      return response.status(403).json({ error: 'no admin rights' })
     }
 
     const { body } = request
@@ -73,7 +74,9 @@ productsRouter.put('/:id', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-    if (!decodedToken.admin) {
+    const user = await User.findById(decodedToken.id)
+
+    if (!user.admin) {
       return response.status(403).json({ error: 'no admin rights' })
     }
 
@@ -104,7 +107,9 @@ productsRouter.delete('/:id', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-    if (!decodedToken.admin) {
+    const user = await User.findById(decodedToken.id)
+
+    if (!user.admin) {
       return response.status(403).json({ error: 'no admin rights' })
     }
 

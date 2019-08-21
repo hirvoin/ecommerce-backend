@@ -1,0 +1,3 @@
+GET http://localhost:3001/api/users/5d52a52de1fec11a8dfac333/orders
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNTJhNTJkZTFmZWMxMWE4ZGZhYzMzMyIsInVzZXJuYW1lIjoidGVzdGkiLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NjE0MzAyNn0.j-g8h1HjaPzK3AaoNxU5IWMVYbNxTTvt1zz2fCsdbWc
