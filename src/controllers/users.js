@@ -7,13 +7,15 @@ const Order = require('../models/order')
 usersRouter.get('/', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
 
-    if (!decodedToken.admin) {
+    if (!user.admin) {
       return response.status(403).json({ error: 'no admin rights' })
     }
 
-    const users = await User.find({})
-    return response.status(200).json(users.map(user => user.toJSON()))
+    const users = await User.find({}).populate('orders')
+
+    return response.status(200).json(users.map(u => u.toJSON()))
   } catch (exception) {
     console.log(exception)
     return response.status(400).json(exception)
@@ -23,12 +25,13 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.get('/:id', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
 
-    if (!decodedToken.id === request.params.id) {
+    if (!user.admin && !decodedToken.id === request.params.id) {
       return response.status(403)
     }
 
-    const userToReturn = await User.findById(decodedToken.id)
+    const userToReturn = await User.findById(decodedToken.id).populate('orders')
 
     return response.status(200).json(userToReturn)
   } catch (exception) {
@@ -56,6 +59,8 @@ usersRouter.post('/', async (request, response) => {
   try {
     const { body } = request
 
+    console.log(body)
+
     if (body.password.length < 6 || body.username.length < 3) {
       return response.status(400).json({ error: 'credential requirements not fulfilled ' })
     }
@@ -66,6 +71,7 @@ usersRouter.post('/', async (request, response) => {
       username: body.username,
       name: body.name,
       admin: body.admin ? body.admin : false,
+      orders: [],
       passwordHash,
     })
 

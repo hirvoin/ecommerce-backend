@@ -25,6 +25,7 @@ orderRouter.get('/', async (request, response) => {
 orderRouter.post('/', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
 
     const { body } = request
 
@@ -33,15 +34,18 @@ orderRouter.post('/', async (request, response) => {
     }
 
     const order = new Order({
-      user: decodedToken.id,
+      user: user.id,
       products: body.products,
       date: Date(),
       totalPrice: body.totalPrice,
       deliveryAddress: body.deliveryAddress,
     })
 
-    console.log('Order', order)
     const savedOrder = await order.save()
+    console.log('Order saved', order)
+    await User.findByIdAndUpdate(user._id, {
+      orders: [...user.orders, savedOrder.id],
+    })
 
     return response.status(201).json(savedOrder)
   } catch (exception) {

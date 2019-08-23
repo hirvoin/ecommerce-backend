@@ -48,7 +48,6 @@ productsRouter.post('/', async (request, response) => {
 
     const { body } = request
     const product = new Product({
-      sku: body.sku,
       type: body.type,
       price: body.price,
       details: {
@@ -84,7 +83,6 @@ productsRouter.put('/:id', async (request, response) => {
     console.log(body)
 
     const product = {
-      sku: body.sku,
       type: body.type,
       price: body.price,
       details: {

@@ -15,6 +15,12 @@ const userSchema = mongoose.Schema({
     requred: true,
   },
   admin: Boolean,
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order',
+    },
+  ],
 })
 
 userSchema.plugin(uniqueValidator)
