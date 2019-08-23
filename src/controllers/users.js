@@ -40,6 +40,7 @@ usersRouter.get('/:id', async (request, response) => {
   }
 })
 
+// useless after refactoring
 usersRouter.get('/:id/orders', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -71,7 +72,6 @@ usersRouter.post('/', async (request, response) => {
       username: body.username,
       name: body.name,
       admin: body.admin ? body.admin : false,
-      orders: [],
       passwordHash,
     })
 

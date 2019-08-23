@@ -43,11 +43,11 @@ orderRouter.post('/', async (request, response) => {
 
     const savedOrder = await order.save()
     console.log('Order saved', order)
-    await User.findByIdAndUpdate(user._id, {
+    const updatedUser = await User.findByIdAndUpdate(user._id, {
       orders: [...user.orders, savedOrder.id],
     })
 
-    return response.status(201).json(savedOrder)
+    return response.status(201).json(updatedUser)
   } catch (exception) {
     console.log(exception)
     return response.status(400).json(exception)
