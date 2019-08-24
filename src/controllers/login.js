@@ -5,7 +5,7 @@ const User = require('../models/user')
 
 loginRouter.post('/', async (request, response) => {
   const { body } = request
-  console.log(body)
+
   const user = await User.findOne({ username: body.username }).populate({
     path: 'orders',
     populate: {
@@ -32,6 +32,7 @@ loginRouter.post('/', async (request, response) => {
     _id: user._id,
     username: user.username,
     name: user.name,
+    email: user.email,
     orders: user.orders,
     admin: user.admin,
   })
