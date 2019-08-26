@@ -5,15 +5,11 @@ const User = require('../models/user')
 
 const formatProduct = product => ({
   _id: product._id,
-  sku: product.sku,
   type: product.type,
-  date_added: product.details.date_added,
-  details: {
-    title: product.details.title,
-    description: product.details.description,
-    price: product.price,
-    // image: product.details.image,
-  },
+  title: product.title,
+  description: product.description,
+  price: product.price,
+  // image: product.details.image,
 })
 
 productsRouter.get('/', async (request, response) => {
@@ -50,12 +46,9 @@ productsRouter.post('/', async (request, response) => {
     const product = new Product({
       type: body.type,
       price: body.price,
-      details: {
-        title: body.title,
-        description: body.description,
-        // image: body.details.image,
-        date_added: Date(),
-      },
+      title: body.title,
+      description: body.description,
+      image: body.image,
     })
 
     console.log(product)
@@ -72,7 +65,6 @@ productsRouter.post('/', async (request, response) => {
 productsRouter.put('/:id', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
     const user = await User.findById(decodedToken.id)
 
     if (!user.admin) {
@@ -80,20 +72,16 @@ productsRouter.put('/:id', async (request, response) => {
     }
 
     const { body } = request
-    console.log(body)
-
     const product = {
       type: body.type,
       price: body.price,
-      details: {
-        title: body.details.title,
-        description: body.details.description,
-        // image: body.details.image,
-        date_added: body.details.date_added,
-      },
+      title: body.title,
+      description: body.description,
+      image: body.image,
     }
 
-    await Product.findByIdAndUpdate(request.params.id, product, { new: true })
+    const saved = await Product.findByIdAndUpdate(request.params.id, product, { new: true })
+    console.log(saved)
     return response.status(200).json(formatProduct(product))
   } catch (exception) {
     console.log(exception)

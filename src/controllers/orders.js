@@ -12,9 +12,7 @@ orderRouter.get('/', async (request, response) => {
       return response.status(403).json({ error: 'no admin rights' })
     }
 
-    const orders = await Order.find({})
-      .populate('products')
-      .populate('user', { name: 1, username: 1 })
+    const orders = await Order.find({}).populate('user', { name: 1, username: 1, email: 1 })
     return response.json(orders.map(order => order.toJSON()))
   } catch (exception) {
     console.log(exception)

@@ -40,22 +40,6 @@ usersRouter.get('/:id', async (request, response) => {
   }
 })
 
-// useless after refactoring
-usersRouter.get('/:id/orders', async (request, response) => {
-  try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
-    if (!decodedToken.id === request.params.id) {
-      return response.status(403)
-    }
-    const orders = await Order.find({ user: request.params.id }).populate('products')
-    return response.status(200).json(orders)
-  } catch (exception) {
-    console.log(exception)
-    return response.status(400).json(exception)
-  }
-})
-
 usersRouter.post('/', async (request, response) => {
   try {
     const { body } = request
