@@ -139,7 +139,8 @@ productsRouter.post('/featured', async (request, response) => {
 
     const savedProducts = featuredProducts.map(async (p) => {
       const product = await Product.findById(p)
-      const featuredProduct = new FeaturedProduct({
+      const featuredProduct = new FeaturedProduct({ 
+        _id: product._id,
         type: product.type,
         price: product.price,
         title: product.title,
