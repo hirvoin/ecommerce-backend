@@ -1,3 +1,4 @@
 node_modules
-lokikirja.txt
 .env
+Procfile
+requests
