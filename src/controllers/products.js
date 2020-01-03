@@ -151,10 +151,13 @@ productsRouter.post('/featured', async (request, response) => {
       console.log('savedFeaturedProduct', savedFeaturedProduct)
       return savedFeaturedProduct
     })
-
+    
     console.log('savedProducts', savedProducts)
 
-    return response.json(savedProducts.map(formatProduct)).status(200)
+    Promise.all(savedProducts).then(values => {
+      console.log('promise fulfilled')
+      return response.json(values.map(formatProduct)).status(200)})
+
   } catch (error) {
     console.log(error)
     return response.status(400).json({ error: 'something went wrong' })
